@@ -8,8 +8,6 @@
 
 
 
-
-
 ## 개념
 
 프로토콜은 한 마디로 정의하면, 
@@ -80,4 +78,168 @@ class SettingIcon: ImageComponent {
 > - `height`와 `width`는 get, set이 모두 가능하기 때문에 `let`으로 선언될 수 없다. 
 > - `imageURL`처럼 연산프로퍼티로 사용될 수 있다. ( get만 있기 때문에 getter만 사용하고 있는 모습 )
 > - `static` 키워드를 이용해서 `타입 프로퍼티`를 만들 수 있다. 
+
+
+
+### 2. 메소드
+
+프로토콜에서 메소드의 요구사항을 알아보자. 
+
+요구사항을 보기전에 간단히 메소드를 나누자면 
+
+- 인스턴스 메소드 
+- 타입 메소드
+
+인스턴스는 인스턴스에서 사용될 메소드이고 타입 메소드는 `static` 키워드가 들어간 해당 타입의 메소드라고 생각하면 된다. 
+
+
+
+**인스턴스 메소드**
+
+```swift
+protocol InstanceMethodProtocol {
+	/// Instance Method
+  func firstMethod()
+  func secondMethod(param: Param)
+  func thirdMethod() -> ReturnValue
+}
+```
+
+위와 같이 
+
+- 매개변수가 없고 Void를 리턴하는 메소드 
+- 매개변수가 있는 메소드
+- 리턴값이 있는 메소드 
+
+> **주의 사항**
+>
+> - 프로토콜에 선언하는 메소드는 `Default Value`를 가질 수 없다. 
+> - `{ }` 중괄호는 생략한다. 
+
+
+
+**프로토콜을 채택해서 사용할 때**
+
+```swift
+class InstanceMethodClass: InstanceMethodProtocol {
+  func firstMethod() {
+    // contents
+  }
+  func secondMethod(param: Param) {
+    // contents
+  }
+  func thirdMethod() -> ReturnValue {
+    // contents
+    return ReturnValue
+  }
+}
+```
+
+
+
+
+
+
+
+**타입 메소드**
+
+```swift
+protocol TypeMethodProtocol {
+  	/// Type Method
+  static func firstMethod()
+  static func secondMethod(param: Param)
+  static func thirdMethod() -> ReturnValue
+}
+```
+
+인스턴스 메소드를 선언한 것과 마찬가지로 선언하면 된다. 
+
+
+
+**프로토콜을 채택해서 사용할 때**
+
+```swift
+class TypeMethodClass: TypeMethodProtocol {
+  static func firstMethod() {
+    // contents
+  }
+  static func secondMethod(param: Param) {
+    // contents
+  }
+  class func thirdMethod() -> ReturnValue {
+    
+  }
+}
+```
+
+
+
+> **챙겨볼 것**
+>
+> 위에서는 다른 타입 메소드와 달리 `class`로 선언한 타입 메소드가 있다. 이 메소드의 경우 `TypeMethodClass`의 서브 클래스에서 `override` 할 수 있다는 의미를 가지고 있다. 
+
+
+
+### 3. Mutating Method
+
+프로토콜에서는 `mutating` 키워드도 사용할 수 있다. 
+
+**mutating** 이란
+
+보통 `struct`나 `enum`에서 자신의 프로퍼티를 변경하는 메소드에 사용되는 키워드이다. 
+
+
+
+
+
+**mutating method**
+
+```swift
+protocol MutatingMethodProtocol {
+  mutating func firstMethod(_ num: Int) 
+}
+```
+
+
+
+
+
+**프로토콜을 채택하는 Struct**
+
+```swift
+struct MutatingMethodStruct {
+  var property: Int = 0
+  mutating func firstMethod(_ num: Int) {
+    self.property += num
+  }
+}
+```
+
+
+
+> `mutating` 키워드를 사용하는 것은 `struct`와 `enum`은 **value type** 이기 때문이다. 
+>
+> `class`의 경우에는 **reference type**이기 때문에 protocol에서 `mutating` 키워드를 사용했다고 하여도 생략할 수 있다. 
+
+
+
+### 4. Intializer
+
+이번에는 초기화 메소드의 요구사항을 알아보자. 
+
+기본적으로 Protocol 에서도 초기화 메소드를 선언할 수 있다. 
+
+
+
+**Initialize Method**
+
+```swift
+Protocol InitializeMethodProtocol {
+  init(param: Param)
+}
+```
+
+
+
+ 
 
